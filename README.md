@@ -23,9 +23,10 @@ Generate migrations with `npm run db:generate`. Build with `npm run build` befor
 
 - `node node_modules/typescript/bin/tsc --noEmit`
 - `npm run build`
+- `node scripts/check-auth.mjs` after building. Runs the built Worker with a disposable local database and checks email/mobile signup, sign-in, session revocation, and the production PBKDF2 limit. It also verifies that every SQL migration is registered in the Drizzle journal.
 - Start the built Worker with `npm start -- --port 5184` and run `node scripts/check-community.mjs`. This loopback-only integration check creates and removes disposable local profiles; it covers authorization, consent/age validation, profile persistence, shortlists, reciprocal interest protection, acceptance/contact privacy, photo metadata removal, profile visibility, and CSRF protection.
 
-The local Worker test supplies simulated dispatcher identity headers. Never expose that local test server on a public interface. Production authentication is owned by the hosting platform.
+Member authentication uses the account/session tables and a secure session cookie. Sites also controls access to the hosted site. The older `check-community.mjs` check supplies dispatcher identity headers and predates member authentication; use `check-auth.mjs` for the current account flow.
 
 ## Supabase photo storage
 

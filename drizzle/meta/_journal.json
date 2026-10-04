@@ -15,6 +15,13 @@
       "when": 1791098682371,
       "tag": "0001_little_siren",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1791134532163,
+      "tag": "0002_member_accounts",
+      "breakpoints": true
     }
   ]
 }

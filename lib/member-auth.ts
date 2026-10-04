@@ -3,7 +3,9 @@ import { env } from 'cloudflare:workers';
 
 const COOKIE='lingayat_session';
 const SESSION_DAYS=30;
-const HASH_ITERATIONS=120000;
+// Cloudflare's production runtime rejects PBKDF2 counts above 100,000.
+// Local workerd does not enforce that limit, so keep it covered in check-auth.
+const HASH_ITERATIONS=100000;
 
 export type MemberUser={userId:string;email:string;displayName:string;fullName:null;contactType:'email'|'mobile'};
 
