@@ -7,7 +7,7 @@ A free English–Marathi matrimony application for Hindu Lingayat adults (21+).
 - Platform-provided ChatGPT sign-in; production identity is supplied by the Sites dispatcher.
 - Persistent D1 profiles, independently fetched shortlists, and interest requests.
 - Contact emails are omitted from browsing and revealed to both participants only after acceptance.
-- Profile photos in R2; browser normalization and server metadata removal.
+- Profile photos in Supabase Storage; browser normalization and server metadata removal.
 - Profile visibility controls and profile/data deletion.
 - Subcommunities supplied by the owner: Pancham/Panchamasali, Jangam, Banajiga/Vani, Dixivant/Dikshavant, Chilivant/Chilwants, Koshti/Padmasali, Hatkar/Bandgar, Mali, Teli, Vanjari, Sutar, Panchal. Other/self-description and undisclosed options are available.
 - Clearly labeled fictional examples when there are no member profiles to display.
@@ -26,6 +26,16 @@ Generate migrations with `npm run db:generate`. Build with `npm run build` befor
 - Start the built Worker with `npm start -- --port 5184` and run `node scripts/check-community.mjs`. This loopback-only integration check creates and removes disposable local profiles; it covers authorization, consent/age validation, profile persistence, shortlists, reciprocal interest protection, acceptance/contact privacy, photo metadata removal, profile visibility, and CSRF protection.
 
 The local Worker test supplies simulated dispatcher identity headers. Never expose that local test server on a public interface. Production authentication is owned by the hosting platform.
+
+## Supabase photo storage
+
+Create a private Supabase Storage bucket named `profile-photos`, then add these runtime variables to the Cloudflare Worker:
+
+- `SUPABASE_URL` - your Supabase project URL, for example `https://example.supabase.co`
+- `SUPABASE_SERVICE_ROLE_KEY` - server-only service role key; never expose it in browser code
+- `SUPABASE_STORAGE_BUCKET` - optional bucket name, defaults to `profile-photos`
+
+The app keeps member/profile data in D1 and stores only the private photo object path in D1.
 
 ## Publication
 

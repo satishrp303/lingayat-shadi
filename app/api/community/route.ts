@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { database,identity,sameOrigin,failure,bucket } from '@/lib/server';
+import { database,identity,sameOrigin,failure } from '@/lib/server';
+import { deletePhoto } from '@/lib/supabase-storage';
 export const dynamic='force-dynamic';
 const text=z.string().trim().min(1).max(100);
 const profileSchema=z.object({name:text.max(60),age:z.number().int().min(21).max(90),gender:z.enum(['woman','man']),community:z.string().trim().max(80),city:text.max(60),occupation:text,education:text,marital:z.enum(['never','divorced','widowed']),bio:z.string().trim().min(20).max(1200),published:z.boolean(),consent:z.literal(true)});
@@ -31,7 +32,7 @@ export async function POST(request:Request){
  if(!me)return Response.json({error:'profile-required'},{status:409});
  if(body.action==='delete-profile'){
  await db.batch([db.prepare('DELETE FROM shortlists WHERE owner = ? OR target = ?').bind(me.id,me.id),db.prepare('DELETE FROM interests WHERE sender = ? OR recipient = ?').bind(me.id,me.id),db.prepare('DELETE FROM profiles WHERE id = ?').bind(me.id)]);
- if(me.photo)try{await bucket().delete(me.photo)}catch(e){console.error('Photo cleanup failed')}
+ if(me.photo)try{await deletePhoto(me.photo)}catch(e){console.error('Photo cleanup failed')}
  return Response.json({ok:true});}
  if(body.action==='respond'){
  if(!z.string().uuid().safeParse(body.id).success||!['accepted','declined'].includes(body.status))return Response.json({error:'invalid'},{status:400});
