@@ -4,7 +4,7 @@ A free English–Marathi matrimony application for Hindu Lingayat adults (21+).
 
 ## Features
 - Responsive burgundy and gold interface, original illustrative wedding photograph, and persistent language preference.
-- Platform-provided ChatGPT sign-in; production identity is supplied by the Sites dispatcher.
+- Member sign-in with mobile number or email ID plus password.
 - Persistent D1 profiles, independently fetched shortlists, and interest requests.
 - Contact emails are omitted from browsing and revealed to both participants only after acceptance.
 - Profile photos in Supabase Storage; browser normalization and server metadata removal.
@@ -15,7 +15,7 @@ A free English–Marathi matrimony application for Hindu Lingayat adults (21+).
 ## Run locally
 
 Use Node.js 22.13+ and npm. Run `npm ci`, then `npm run dev -- --port 5183`.
-The portable starter simulates sign-in locally at `/signin-with-chatgpt?return_to=/`; this mock identity is not part of the production build.
+Members create an account with a mobile number or email ID plus password.
 
 Generate migrations with `npm run db:generate`. Build with `npm run build` before applying local migrations through Wrangler using `dist/server/wrangler.json` and `.wrangler/state`. Apply the SQL files in `drizzle/` exactly once, in numerical order. Production migrations are applied by Sites during deployment.
 
